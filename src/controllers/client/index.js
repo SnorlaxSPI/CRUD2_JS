@@ -4,33 +4,36 @@ import { CategoriesRepository } from '../../repositories/CategoriesRepository.js
 // Apenas usado em typescript
 //const clients: Category[] = [];
 
+export function objetoNovo(data) {
+  return {
+    id: data.id,
+    name: data.name,
+    phone: data.phone,
+  }
+};
+
 const categoriesRepository = new CategoriesRepository();
+const category = new Category();
 
 const clients = [];
 
-const category = new Category();
 
 export default {
   post_controller (request,response) {
     // request.body => quer o corpo da requisição
-    //const { name, phone } = objetoNovo(request.body);
-    const { name, phone } = request.body;
+    const { name, phone } = objetoNovo(request.body);
+    //const { name, phone } = request.body;
 
     categoriesRepository.create({ name, phone });
   
-//    Object.assign(category, {
-//      name,
-//      phone
-//    })
-//    clients.push(category);
-//
-    response.status(201).json(category);
+    response.status(201).json(categoriesRepository);
 //    //response.status(201).json({ message: `ID: ${client.id}` });
     console.log(`ID inserido com sucesso ${category.id}`);
 },
 
   get_controller(request,response) {  
-    response.status(200).json(clients);
+    const allList = categoriesRepository.list();
+    response.status(200).json(allList);
   },
 
   delete_controller(request,response) {
